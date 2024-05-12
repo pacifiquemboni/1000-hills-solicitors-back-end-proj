@@ -23,13 +23,10 @@ const userSchema = new Schema({
     type: String,
     required: false
   },
-  confirmPassword: {
+  role: {
     type: String,
-    required: false
-  },
-  userName: {
-    type: String,
-    required: false
+    required: false,
+    default: "client"
   },
   phoneNumber: {
     type: String,

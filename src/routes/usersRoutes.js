@@ -1,11 +1,10 @@
-import express, { Router } from "express";
-import usersController from '../controllers/usersController.js'
-// import verifyEmailRouter from "./verifyEmailRouter.js";
+import express from "express";
+import usersController from '../controllers/usersController.js';
 
-const userRoute = Router()
+const userRoute = express.Router();
 
-userRoute.post('/', usersController.registerUsers);
-
+userRoute.post('/register', usersController.registerUsers);
 userRoute.get('/', usersController.getUsers);
-userRoute.get('/verify/:token', usersController.verifyEmail);
+userRoute.post('/verify/:token', usersController.verifyEmail);
+
 export default userRoute;

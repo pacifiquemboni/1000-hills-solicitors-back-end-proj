@@ -1,0 +1,29 @@
+{
+  "name": "1000-hills-solicitors-back-end",
+  "version": "1.0.0",
+  "description": "1000-hills-solicitors building bridge to justice",
+  "main": "server.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "babel src -d dist",
+    "start": "node src/server.js",
+    "dev": "nodemon src/server.js"
+  },
+  "author": "pacifiquemboni@gmail.com",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "ejs": "^3.1.10",
+    "express": "^4.19.2",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.3.4",
+    "nodemailer": "^6.9.13"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.24.5",
+    "@babel/preset-env": "^7.24.5",
+    "babel-cli": "^6.26.0"
+  }
+}

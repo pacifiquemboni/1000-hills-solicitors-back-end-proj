@@ -6,6 +6,7 @@ class UserVerify{
     static verifyStrongPassword(password) {
         // Minimum length requirement
         const minLength = 8;
+        const maxLength = 16;
         
         // Regular expressions to check for presence of different character types
         const hasUpperCase = /[A-Z]/.test(password);
@@ -15,7 +16,7 @@ class UserVerify{
         
         // Check if password meets all criteria
         const isStrong =
-            password.length >= minLength &&
+            password.length >= minLength && password.length<=maxLength &&
             hasUpperCase &&
             hasLowerCase &&
             hasNumbers &&

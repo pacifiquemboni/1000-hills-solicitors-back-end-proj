@@ -4,6 +4,7 @@ import bodyParser from 'body-parser';
 import nodemailer from "nodemailer";
 import jwt from "jsonwebtoken";
 import Users from "../model/userModel.js";
+import verifyEmail from "../varidation/verify.js"
  // Assuming the model is defined as 'User'
 
 // Function to send verification email
@@ -55,7 +56,16 @@ class UsersController {
       if (existingUser) {
         return res.status(409).json({ message: "Email already exists" });
       }
-
+      if(!verifyEmail.verifyId(idNo)){
+        return res.status(400).json({ message: "Your national identity card number should have 16 characters." });
+      }
+      if(!verifyEmail.validateEmail(email)){
+        return res.status(400).json({ message: "Invalid email address. Please enter a valid email." });
+      }
+      if(!verifyEmail.verifyStrongPassword(password)){
+        return res.status(400).json({ message: "Password not strong enough. Your password should contain at least one uppercase letter, one lowercase letter, one digit, one special character, and should be between 8 and 16 characters long." });
+      }
+      
       // Generate token for email verification
       const token = jwt.sign({ email, idNo, role }, process.env.JWT_SECRET, { expiresIn: '1d' }); // Token expires in 1 day
 

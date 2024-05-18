@@ -7,6 +7,7 @@ import Users from "../model/userModel.js";
 import verifyEmail from "../varidation/verify.js"
 import { JWT } from '../helper/jwt.js';
 import User from '../model/userModel.js';
+import bcrypt from 'bcrypt';
  // Assuming the model is defined as 'User'
 
 // Function to send verification email
@@ -55,9 +56,9 @@ class UsersController {
       // Check if user with the email already exists
       const existingUser = await Users.findOne({ email });
 
-      if (existingUser) {
-        return res.status(409).json({ message: "Email already exists" });
-      }
+      // if (existingUser) {
+      //   return res.status(409).json({ message: "Email already exists" });
+      // }
       if(!verifyEmail.verifyId(idNo)){
         return res.status(400).json({ message: "Your national identity card number should have 16 characters." });
       }
@@ -255,6 +256,78 @@ class UsersController {
       })
     }
   }
-}  
+  static async resetPassword(req, res) {
+    try {
+      const { email } = req.body;
+      const findUser = await User.findOne({ email });
+      if (!findUser) {
+        return res.status(400).json({ message: "User not found" });
+      }
 
+      const token = jwt.sign({ userId: findUser._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
+      findUser.resetToken = token;
+      findUser.resetTokenExpiration = Date.now() + 3600000; // 1 hour
+      await findUser.save();
+
+      console.log("Token generated:", token);
+      console.log("Token expiration:", new Date(findUser.resetTokenExpiration).toISOString());
+
+      const transporter = nodemailer.createTransport({
+        service: 'gmail',
+        auth: {
+          user: process.env.EMAIL_USERNAME,
+          pass: process.env.EMAIL_PASSWORD,
+        },
+      });
+
+      const mailOptions = {
+        to: findUser.email,
+        from: process.env.EMAIL_USERNAME,
+        subject: "Password Reset",
+        text: `You requested a password reset. Click the following link to reset your password: http://localhost:10000/reset/${token}`,
+      };
+
+      transporter.sendMail(mailOptions, (err, info) => {
+        if (err) return res.status(500).send(err.toString());
+        res.status(200).send('Reset email sent');
+      });
+
+    } catch (error) {
+      return res.status(500).json({ status: "error", message: error.message });
+    }
+  }
+
+  static async paramsToken(req, res) {
+    const { token } = req.params;
+    const { password } = req.body;
+
+    try {
+      const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
+      console.log("Decoded token:", decodedToken);
+
+      const user = await User.findOne({
+        _id: decodedToken.userId,
+        resetToken: token,
+        resetTokenExpiration: { $gt: Date.now() },
+      });
+
+      if (!user) {
+        console.log("Invalid or expired token");
+        return res.status(400).send('Invalid or expired token');
+      }
+
+      // Hash the password before saving
+      const hashedPassword = await bcrypt.hash(password, 12);
+      user.password = hashedPassword;
+      user.resetToken = undefined;
+      user.resetTokenExpiration = undefined;
+      await user.save();
+
+      res.status(200).send('Password reset successful');
+    } catch (error) {
+      console.log("Error verifying token:", error.message);
+      return res.status(400).send('Invalid or expired token');
+    }
+  }
+}
 export default UsersController;

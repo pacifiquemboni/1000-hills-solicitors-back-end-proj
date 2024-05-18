@@ -3,6 +3,7 @@ import dotenv from "dotenv";
 import cors from "cors";
 import connectDB from "./database/connection.js";
 import userRoute from "./routes/usersRoutes.js";
+import casesRoute from "./routes/casesRoute.js";
 
 dotenv.config();
 const app = express();
@@ -12,6 +13,7 @@ app.use(cors());
 app.use(express.json()); // Use express.json() instead of bodyParser.json()
 
 app.use('/users', userRoute);
+app.use('/cases', casesRoute);
 
 app.get("/", (req, res) => {
   res.status(200).send("Welcome to my API");

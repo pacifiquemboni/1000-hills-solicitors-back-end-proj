@@ -4,7 +4,7 @@ const { Schema } = mongoose;
 const userSchema = new Schema({
   idNo: {
     type: Number,
-    required: false
+    required: true
   },
   email: {
     type: String,
@@ -12,40 +12,40 @@ const userSchema = new Schema({
   },
   firstName: {
     type: String,
-    required: false
+    required: true
   },
   lastName: {
     type: String,
-    required: false
+    required: true
   },
   password: {
     type: String,
-    required: false
+    required: true
   },
   role: {
     type: String,
-    required: false,
+    required: true,
     default: "client"
   },
   phoneNumber: {
     type: String,
-    required: false
+    required: true
   },
   preferredContact: {
     type: String,
-    required: false
+    required: true
   },
   district: {
     type: String,
-    required: false
+    required: true
   },
   sector: {
     type: String,
-    required: false
+    required: true
   },
   cell: {
     type: String,
-    required: false
+    required: true
   },
   verified: {
     type: Boolean,
@@ -58,7 +58,9 @@ const userSchema = new Schema({
   updatedAt: {
     type: Date,
     default: Date.now
-  }
+  },
+  resetToken: String,
+  resetTokenExpiration: Date
 });
 
 const User = mongoose.model('User', userSchema);

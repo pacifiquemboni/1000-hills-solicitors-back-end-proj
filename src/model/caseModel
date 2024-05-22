@@ -2,49 +2,51 @@ import mongoose from "mongoose";
 const { Schema } = mongoose;
 
 const caseSchema = new Schema({
-    caseType: {
-   type: String,
-    required: false
+  caseOwner: {
+    type: String,
+    required: true,
+  },
+  caseType: {
+    type: String,
+    required: true,
   },
   caseSubtype: {
-  type: String,
-    required:false
+    type: String,
+    required: true,
   },
   summary: {
     type: String,
-    required: false
+    required: true,
   },
   file: {
     type: String,
-    required: false
+    required: false,
   },
   markAsDoneArchived: {
     type: String,
-    default:"going",
+    default: "going",
     // required: false
   },
   assignedTo: {
     type: String,
-    default:"",
+    default: "",
     // required: false,
   },
   status: {
     type: String,
-default:"pending",
-    
+    default: "pending",
   },
-  
+
   createdAt: {
     type: Date,
-    default: Date.now
+    default: Date.now,
   },
   updatedAt: {
     type: Date,
-    default: Date.now
+    default: Date.now,
   },
-  
 });
 
-const Cases = mongoose.model('Cases', caseSchema);
+const Cases = mongoose.model("Cases", caseSchema);
 
 export default Cases;

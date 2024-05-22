@@ -240,6 +240,7 @@ class UsersController {
       const token = JWT.generateJwt({
         userId: userFound._id,
         role: userFound.role,
+        email:userFound.email,
         firstName: userFound.firstName,
         isernid: userFound.idNo
       })

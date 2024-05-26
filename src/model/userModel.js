@@ -2,14 +2,7 @@ import mongoose from "mongoose";
 const { Schema } = mongoose;
 
 const userSchema = new Schema({
-  idNo: {
-    type: Number,
-    required: true
-  },
-  email: {
-    type: String,
-    required: true
-  },
+ 
   firstName: {
     type: String,
     required: true
@@ -18,6 +11,15 @@ const userSchema = new Schema({
     type: String,
     required: true
   },
+  email: {
+    type: String,
+    required: true
+  },
+  idNo: {
+    type: Number,
+    required: true
+  },
+ 
   password: {
     type: String,
     required: true
@@ -49,7 +51,7 @@ const userSchema = new Schema({
   },
   verified: {
     type: Boolean,
-    default: false // Initially set as unverified
+    default: false,// Initially set as unverified
   },
   createdAt: {
     type: Date,

@@ -8,7 +8,7 @@ import verifyEmail from "../varidation/verify.js"
 import { JWT } from '../helper/jwt.js';
 import User from '../model/userModel.js';
 import bcrypt from 'bcrypt';
- // Assuming the model is defined as 'User'
+//  Assuming the model is defined as 'User'
 
 // Function to send verification email
 async function sendVerificationEmail(email,token) {
@@ -33,11 +33,11 @@ const mailConfigurations = {
     subject: 'Email Verification', 
       
     // This would be the text of email body 
-    text: `Hi! There, You have recently visited  
-           our website and entered your email. 
-           Please follow the given link to verify your email 
-           http://localhost:10000/verify/${token}  
-           Thanks` 
+    html: `<p>Hi!  ${email},</p>
+    <p>You have recently visited our website and entered your email.</p>
+    <p>Please follow the given link to verify your email:</p>
+    <h3><a href="http://127.0.0.1:5501/verify.html?token=${token}?email" target="blank_">here</a></h3>
+    <p>Thanks</p>`
       
 }; 
   
@@ -56,9 +56,9 @@ class UsersController {
       // Check if user with the email already exists
       const existingUser = await Users.findOne({ email });
 
-      // if (existingUser) {
-      //   return res.status(409).json({ message: "Email already exists" });
-      // }
+      if (existingUser) {
+        return res.status(409).json({ message: "Email already exists" });
+      }
       if(!verifyEmail.verifyId(idNo)){
         return res.status(400).json({ message: "Your national identity card number should have 16 characters." });
       }
@@ -248,7 +248,16 @@ class UsersController {
         status: "success",
         message: "Logged in successfully",
         token,
-        role:userFound.role
+        role:userFound.role,
+        user:{
+        userId: userFound._id,
+        role: userFound.role,
+        email:userFound.email,
+        firstName: userFound.firstName,
+        isernid: userFound.idNo
+
+        }
+        
       })
     } catch (error) {
       return res.status(500).json({

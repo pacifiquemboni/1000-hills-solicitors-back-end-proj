@@ -18,12 +18,14 @@ class casesCotroller {
       if (!caseOwner) {
         return res.status(401).json({ error: "Unauthorized" });
       }
+      const userId=req.user.userId;
       const resisterCases = await Cases.create({
         caseType,
         caseSubtype,
         summary,
         file: req.file.path,
         caseOwner: caseOwner,
+        userId:userId
       });
       return res.status(200).json({
         data: resisterCases,
@@ -44,6 +46,18 @@ class casesCotroller {
       console.log(error);
       return res.status(500).json({ message: "Failed to access to db" });
     }
+  }
+  static async getCasesById(req,res){
+try{
+  const caseByUserId=await Cases.find(req.params.userId);
+  console.log(req.params.caseOwner,"email  fro token")
+  return res.status(200).json({data:caseByUserId,message:"this all cases you submitted"})
+
+
+}catch(error){
+  console.log(error);
+  return res.status(500).json({message:"failed to acess to db"});
+}
   }
   // get single cases
   static async getSingleCase(req, res) {

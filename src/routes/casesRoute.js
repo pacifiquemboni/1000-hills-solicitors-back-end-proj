@@ -28,6 +28,8 @@ casesRoute.get(
   authMiddleware.checkAdminRole,
   casesCotroller.getCases
 );
+casesRoute.get("/:userId",
+authMiddleware.isAuthenticated,casesCotroller.getCasesById);
 // get single cases
 casesRoute.get(
   "/:id",

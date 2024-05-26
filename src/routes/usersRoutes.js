@@ -16,7 +16,7 @@ userRoute.post("/login", usersController.loginUser);
 //get single user profile
 userRoute.get(
   "/:id",
-  authmiddleware.isAuthenticated,
+  // authmiddleware.isAuthenticated,
   usersController.getSingleUser
 );
 //update single user

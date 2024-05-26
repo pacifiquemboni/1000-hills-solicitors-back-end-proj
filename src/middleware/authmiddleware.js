@@ -11,15 +11,19 @@ class authMiddleware{
         });
       }
       const token = authorization.split(" ")[1];
+      
       if (!token) {
         return res.status(401).json({
           status: "Fail",
           message: "Unauthorized action"
         });
       }
-      const secretkey = "XyZAbC123$%^&*";
+      const secretkey =process.env.JWT_SECRET;
       const user = jwt.verify(token, secretkey);
+      // console.log(user,'user who')
+      
       req.user = user;
+
       next();
     } catch (error) {
       if (error.name === 'JsonWebTokenError') {

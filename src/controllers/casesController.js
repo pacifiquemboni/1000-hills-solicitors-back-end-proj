@@ -4,35 +4,61 @@ import PDFDocument from "pdfkit";
 import fs from "fs";
 import Cases from "../model/caseModel";
 import multer from "multer";
+import cloudinary from "../cloudinary/cloudinary.js"
+
+
+
 class casesCotroller {
   // register cases
+  
   static async registerCases(req, res) {
     try {
       const { caseType, caseSubtype, summary } = req.body;
 
       if (!req.file) {
-        return res.status(400).json({ error: "no image uploaded" });
+        return res.status(400).json({ error: "No file uploaded" });
       }
+
       // Ensure that the user is authenticated and the email is attached to req.user
       const caseOwner = req.user.email;
       if (!caseOwner) {
         return res.status(401).json({ error: "Unauthorized" });
       }
-      const userId=req.user.userId;
-      const resisterCases = await Cases.create({
-        caseType,
-        caseSubtype,
-        summary,
-        file: req.file.path,
-        caseOwner: caseOwner,
-        userId:userId
-      });
-      return res.status(200).json({
-        data: resisterCases,
-        message: "cases registered successFully",
+      const userId = req.user.userId;
+
+      // Determine the resource type based on MIME type
+      let resourceType = 'image';
+      if (req.file.mimetype !== 'image/jpeg' && req.file.mimetype !== 'image/png' && req.file.mimetype !== 'image/gif') {
+        resourceType = 'raw';
+      }
+
+      // Upload file to Cloudinary
+      cloudinary.uploader.upload(req.file.path, {
+        resource_type: resourceType
+      }, async (err, result) => {
+        if (err) {
+          console.error("Error uploading file:", err);
+          return res.status(500).json({ success: false, message: "File upload error" });
+        }
+        console.log("File uploaded successfully:", result);
+
+        // Save case details in the database
+        const registeredCase = await Cases.create({
+          caseType,
+          caseSubtype,
+          summary,
+          file: result.secure_url, // Use the Cloudinary URL
+          caseOwner: caseOwner,
+          userId: userId
+        });
+
+        return res.status(200).json({
+          data: registeredCase,
+          message: "Case registered successfully",
+        });
       });
     } catch (error) {
-      console.error("Error registering user:", error);
+      console.error("Error registering case:", error);
       res.status(500).json({ error: "Failed to register cases" });
     }
   }
@@ -44,12 +70,15 @@ class casesCotroller {
       return res.status(200).json({ data: allCases, message: "allCases" });
     } catch (error) {
       console.log(error);
-      return res.status(500).json({ message: "Failed to access to db" });
+      return res.status(500).json({ message: "Failed to access to db please check again" });
     }
   }
   static async getCasesById(req,res){
 try{
-  const caseByUserId=await Cases.find(req.params.userId);
+  const userId = req.params.userId;
+    
+  // Ensure the parameter passed to find() is an object
+  const caseByUserId = await Cases.find({ userId: userId });
   console.log(req.params.caseOwner,"email  fro token")
   return res.status(200).json({data:caseByUserId,message:"this all cases you submitted"})
 
@@ -59,6 +88,22 @@ try{
   return res.status(500).json({message:"failed to acess to db"});
 }
   }
+  // get cases by assigned to
+  static async caseByAssigned(req, res) {
+    try { 
+        const assignedTo = req.params.assignedTo;
+      
+        const assignedCase = await Cases.find({assignedTo: assignedTo}); 
+        // console.log(assignedCase.caseType,"casetype")
+        // console.log(assignedCase.status,"caseType")// Await the result of findOne()
+        return res.status(200).json({ data: assignedCase, message: "Your assigned case is this" });
+    } catch(error) {
+        console.log(error);
+        return res.status(500).json({ message: "Failed to get cases of assignedTo" });
+    }
+}
+
+
   // get single cases
   static async getSingleCase(req, res) {
     try {

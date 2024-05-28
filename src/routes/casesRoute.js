@@ -5,9 +5,9 @@ import authMiddleware from "../middleware/authmiddleware.js";
 const casesRoute = express.Router();
 
 const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, "src/documents");
-  },
+  // destination: (req, file, cb) => {
+  //   cb(null, "src/documents");
+  // },
   filename: (req, file, cb) => {
     cb(null, Date.now() + "-" + file.originalname);
   },
@@ -18,24 +18,27 @@ const upload = multer({ storage });
 casesRoute.post(
   "/register",
   upload.single("file"),
+
   authMiddleware.isAuthenticated,
   casesCotroller.registerCases
 );
 // get all cases
 casesRoute.get(
   "/",
-  authMiddleware.isAuthenticated,
-  authMiddleware.checkAdminRole,
+  // authMiddleware.isAuthenticated,
+  // authMiddleware.checkAdminRole,
   casesCotroller.getCases
 );
 casesRoute.get("/:userId",
 authMiddleware.isAuthenticated,casesCotroller.getCasesById);
 // get single cases
 casesRoute.get(
-  "/:id",
+  "/singleCase/:id",
   authMiddleware.isAuthenticated,
   casesCotroller.getSingleCase
 );
+casesRoute.get("/assignedTo/:assignedTo",authMiddleware.isAuthenticated,
+casesCotroller.caseByAssigned);
 casesRoute.put(
   "/:id",
   authMiddleware.isAuthenticated,
@@ -47,7 +50,7 @@ casesRoute.delete(
   "/:id",
   authMiddleware.isAuthenticated,
   authMiddleware.checkClientRole,
-  authMiddleware.checkAdminRole,
+  // authMiddleware.checkAdminRole,
   casesCotroller.deleteSingleCase
 );
 // mark as done or archive

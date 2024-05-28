@@ -33,7 +33,7 @@ required:true,
   },
   assignedTo: {
     type: String,
-    default: "",
+    default: "iziah.chapin@dockleafs.com",
     // required: false,
   },
   status: {

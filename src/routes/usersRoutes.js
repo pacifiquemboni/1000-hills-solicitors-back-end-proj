@@ -8,6 +8,7 @@ userRoute.post("/register", usersController.registerUsers);
 userRoute.get(
   "/",
   authmiddleware.isAuthenticated,
+  authmiddleware.checkAdminRole,
   usersController.getUsers
 );
 userRoute.post("/verify/:token", usersController.verifyEmail);

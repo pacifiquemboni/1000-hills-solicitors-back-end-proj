@@ -27,7 +27,7 @@ const userSchema = new Schema({
   role: {
     type: String,
     required: true,
-    default: "client"
+    default: "adminStaff",
   },
   phoneNumber: {
     type: String,
@@ -51,7 +51,7 @@ const userSchema = new Schema({
   },
   verified: {
     type: Boolean,
-    default: false,// Initially set as unverified
+    default: true,// Initially set as unverified
   },
   createdAt: {
     type: Date,

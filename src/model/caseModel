@@ -33,7 +33,7 @@ const caseSchema = new Schema({
   },
   assignedTo: {
     type: String,
-    default: "",
+    default: "iziah.chapin@dockleafs.com",
     // required: false,
   },
   status: {

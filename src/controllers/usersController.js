@@ -19,7 +19,7 @@ async function sendVerificationEmail(email, token) {
       pass: process.env.EMAIL_PASSWORD,
     },
   });
-
+ 
   const mailConfigurations = {
     // It should be a string of sender/server email
     from: "EMAIL_USERNAME",
@@ -33,7 +33,7 @@ async function sendVerificationEmail(email, token) {
     html: `<p>Hi!  ${email},</p>
     <p>You have recently visited our website and entered your email.</p>
     <p>Please follow the given link to verify your email:</p>
-    <h3><a href="http://127.0.0.1:5501/verify.html?token=${token}?email" target="blank_">here</a></h3>
+    <h3><a href="${process.env.FRONT_END_URL}/verify.html?token=${token}?email" target="blank_">here</a></h3>
     <p>Thanks</p>`,
   };
 

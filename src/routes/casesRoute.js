@@ -25,8 +25,8 @@ casesRoute.post(
 // get all cases
 casesRoute.get(
   "/",
-  // authMiddleware.isAuthenticated,
-  // authMiddleware.checkAdminRole,
+  authMiddleware.isAuthenticated,
+  authMiddleware.checkAdminRole,
   casesCotroller.getCases
 );
 casesRoute.get("/:userId",

@@ -95,5 +95,22 @@ class authMiddleware{
       })
     }
   }
+  static async checkAdminRole(req,res,next){
+    try {
+      const user = req.user
+      if(user.role == "super_admin"){
+        return next();
+      }
+      return res.status(4003).json({
+        status:"fail",
+        message: "You do not have a permission to perform this action"
+      })
+    } catch (error) {
+      return res.status(500).json({
+        status:"error",
+        message:error.message
+      })
+    }
+  }
 }
 export default authMiddleware

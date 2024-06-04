@@ -35,13 +35,13 @@ userRoute.patch(
 );
 userRoute.post(
   "/reset",
-  authmiddleware.isAuthenticated,
+  // authmiddleware.isAuthenticated,
   usersController.resetPassword
 );
 // for paraming token from user
 userRoute.post(
   "/reset/:token",
-  authmiddleware.isAuthenticated,
+  // authmiddleware.isAuthenticated,
   usersController.paramsToken
 );
 

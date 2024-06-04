@@ -272,22 +272,26 @@ class UsersController {
       // Check if the user exists
       if (!user) {
         return res.status(404).json({
-          status:"fail",
-           message: "User not found" });
+          status: "fail",
+          message: "User not found",
+        });
       }
 
       // Send response indicating successful email verification
       return res
         .status(200)
-        .json({ data: user,
-          status:"success",
-          message: "Email verified successfully" });
+        .json({
+          data: user,
+          status: "success",
+          message: "Email verified successfully",
+        });
     } catch (error) {
       console.error("Error verifying email:", error);
       // Send internal server error response
-      return res.status(500).json({ 
-        status:"fail",
-        error: "Internal server error" });
+      return res.status(500).json({
+        status: "fail",
+        error: "Internal server error",
+      });
     }
   }
   static async loginUser(req, res) {
@@ -374,12 +378,23 @@ class UsersController {
         to: findUser.email,
         from: process.env.EMAIL_USERNAME,
         subject: "Password Reset",
-        text: `You requested a password reset. Click the following link to reset your password: http://localhost:10000/reset/${token}`,
+        html: `You requested a password reset. Click the following link to reset your password:<a href="${process.env.FRONT_END_URL}/resetPassword.html?token=${token}">Link</a>
+         <p>This link will expire ${new Date(findUser.resetTokenExpiration).toISOString()}</p>
+        
+        
+        `,
       };
 
       transporter.sendMail(mailOptions, (err, info) => {
-        if (err) return res.status(500).send(err.toString());
-        res.status(200).send("Reset email sent");
+        if (err)
+          return res.status(500).json({
+            status: "fail",
+            message: err.error,
+          });
+      });
+      res.status(200).json({
+        status: "success",
+        message: "Reset email sent",
       });
     } catch (error) {
       return res.status(500).json({ status: "error", message: error.message });
@@ -406,16 +421,16 @@ class UsersController {
       }
 
       // Hash the password before saving
-      const hashedPassword = await bcrypt.hash(password, 12);
-      user.password = hashedPassword;
+      // const hashedPassword = await bcrypt.hash(password, 12);
+      user.password = password;
       user.resetToken = undefined;
       user.resetTokenExpiration = undefined;
       await user.save();
 
-      res.status(200).send("Password reset successful");
+      res.status(200).json({ message: "Password reset successful" });
     } catch (error) {
       console.log("Error verifying token:", error.message);
-      return res.status(400).send("Invalid or expired token");
+      return res.status(400).send({ message: "Invalid or expired token" });
     }
   }
 }

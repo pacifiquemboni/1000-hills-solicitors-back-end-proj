@@ -25,8 +25,8 @@ casesRoute.post(
 // get all cases
 casesRoute.get(
   "/",
-  // authMiddleware.isAuthenticated,
-  // authMiddleware.checkAdminRole,
+  authMiddleware.isAuthenticated,
+  authMiddleware.checkAdminRole,
   casesCotroller.getCases
 );
 casesRoute.get("/:userId",
@@ -49,8 +49,8 @@ casesRoute.put(
 casesRoute.delete(
   "/:id",
   authMiddleware.isAuthenticated,
-  authMiddleware.checkClientRole,
-  // authMiddleware.checkAdminRole,
+  // authMiddleware.checkClientRole,
+  authMiddleware.checkAdminRole,
   casesCotroller.deleteSingleCase
 );
 // mark as done or archive

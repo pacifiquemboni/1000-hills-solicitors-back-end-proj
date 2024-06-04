@@ -29,11 +29,24 @@ async function sendVerificationEmail(email, token) {
     subject: "Email Verification",
 
     // This would be the text of email body
-    html: `<p>Hi!  ${email},</p>
-    <p>You have recently visited our website and entered your email.</p>
-    <p>Please follow the given link to verify your email:</p>
-    <h3><a href="${process.env.FRONT_END_URL}/verify.html?token=${token}?email" target="blank_">here</a></h3>
-    <p>Thanks</p>`,
+    html: `
+     <div style="width: 100%; height: 60vh; display: flex; flex-direction: column; justify-content:start; align-items: center; ">
+    <div style="width: 80%; max-width: 600px; margin: auto;border-bottom: 1px solid;">
+      <img src="https://res.cloudinary.com/dndfvxckz/image/upload/v1718273194/t8y9k778uea4tlzcidnn.jpg" style="width: 100%; height: 200px; display: block; margin: auto;">
+    </div>
+    <hr style="border: 1px silid black;">
+    <div style="width: 80%; max-width: 600px; margin: auto; text-align: left; font-family: Arial, sans-serif;">
+      <p style="font-size: 16px;">Hi! ${email},</p>
+      <p style="font-size: 16px;">Thank you for your interest in our organization! You are almost done with the sign-up process.</p>
+      <p style="font-size: 16px;">Please <a href="${process.env.FRONT_END_URL}/verify.html?token=${token}&email=${email}" target="_blank" style="color: #007bff; text-decoration: none;">click here</a> to confirm your account.</p>
+    </div>
+    <div style="width: 80%; max-width: 600px;background-color: #00171F;color: white; margin: auto; text-align: center; margin-top: 20px; font-family: Arial, sans-serif;border-bottom: 1px solid;">
+      <p style="font-size: 16px;">Thanks!</p>
+    </div>
+  </div>
+    
+    
+    `,
   };
 
   transporter.sendMail(mailConfigurations, function (error, info) {
@@ -378,11 +391,24 @@ class UsersController {
         to: findUser.email,
         from: process.env.EMAIL_USERNAME,
         subject: "Password Reset",
-        html: `You requested a password reset. Click the following link to reset your password:<a href="${process.env.FRONT_END_URL}/resetPassword.html?token=${token}">Link</a>
-         <p>This link will expire ${new Date(findUser.resetTokenExpiration).toISOString()}</p>
+        html: `<div style="width: 100%; height: 60vh; display: flex; flex-direction: column; justify-content:start; align-items: center; ">
+    <div style="width: 80%; max-width: 600px; margin: auto;border-bottom: 1px solid;">
+      <img src="https://res.cloudinary.com/dndfvxckz/image/upload/v1718273194/t8y9k778uea4tlzcidnn.jpg" style="width: 100%; height: 200px; display: block; margin: auto;">
+    </div>
+    <div style="width: 80%; max-width: 600px; margin: auto; text-align: left; font-family: Arial, sans-serif;">
+      <p style="font-size: 16px;">Hi! ${email},</p>
+      <p style="font-size: 16px;">You requested a password reset. Click the following link to reset your password:<a href="${
+        process.env.FRONT_END_URL
+      }/resetPassword.html?token=${token}">Link</a>.</p>
+      <p>This link will expire ${new Date(
+        findUser.resetTokenExpiration
+      ).toISOString()}</p>
+    </div>
+    <div style="width: 80%; max-width: 600px;background-color: #00171F;color: white; margin: auto; text-align: center; margin-top: 20px; font-family: Arial, sans-serif;border-bottom: 1px solid;">
+      <p style="font-size: 16px;">Thanks!</p>
+    </div>
+  </div> `,
         
-        
-        `,
       };
 
       transporter.sendMail(mailOptions, (err, info) => {

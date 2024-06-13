@@ -391,7 +391,7 @@ class UsersController {
         to: findUser.email,
         from: process.env.EMAIL_USERNAME,
         subject: "Password Reset",
-        html: `<div style="width: 100%; height: 60vh; display: flex; flex-direction: column; justify-content:start; align-items: center; ">
+        html: `<div style="width: 100%; height: 60vh;  ">
     <div style="width: 80%; max-width: 600px; margin: auto;border-bottom: 1px solid;">
       <img src="https://res.cloudinary.com/dndfvxckz/image/upload/v1718273194/t8y9k778uea4tlzcidnn.jpg" style="width: 100%; height: 200px; display: block; margin: auto;">
     </div>
@@ -404,8 +404,8 @@ class UsersController {
         findUser.resetTokenExpiration
       ).toISOString()}</p>
     </div>
-    <div style="width: 80%; max-width: 600px;background-color: #00171F;color: white; margin: auto; text-align: center; margin-top: 20px; font-family: Arial, sans-serif;border-bottom: 1px solid;">
-      <p style="font-size: 16px;">Thanks!</p>
+    <div style="width: 80%; max-width: 600px;background-color: #00171F;color: white; margin: auto;height: 60px; text-align: center; margin-top: 20px; font-family: Arial, sans-serif;border-bottom: 1px solid;">
+      <p style="font-size: 16px;padding: 15px;">Thanks!</p>
     </div>
   </div> `,
         

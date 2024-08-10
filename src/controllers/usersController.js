@@ -30,18 +30,60 @@ async function sendVerificationEmail(email, token) {
 
     // This would be the text of email body
     html: `
-     <div style="width: 100%; height: 60vh;  ">
-    <div style="width: 80%; max-width: 600px; margin: auto;border-bottom: 1px solid;">
-      <img src="https://res.cloudinary.com/dndfvxckz/image/upload/v1718273194/t8y9k778uea4tlzcidnn.jpg" style="width: 100%; height: 200px; display: block; margin: auto;">
+     <div style="width: 90%; height: fitcontent;border: 2px solid #021742;border-radius: 20px;">
+    <div
+      style="
+        width: 80%;
+        max-width: 600px;
+        margin: auto;
+        border-bottom: 1px solid;
+      "
+    >
+      <img
+        src="https://res.cloudinary.com/dndfvxckz/image/upload/v1718273194/t8y9k778uea4tlzcidnn.jpg"
+        style="width: 70%; height: 150px; display: block; margin: auto"
+      />
     </div>
-    <hr style="border: 1px silid black;">
-    <div style="width: 80%; max-width: 600px; margin: auto; text-align: left; font-family: Arial, sans-serif;">
-      <p style="font-size: 16px;">Hi! ${email},</p>
-      <p style="font-size: 16px;">Thank you for your interest in our organization! You are almost done with the sign-up process.</p>
-      <p style="font-size: 16px;">Please <a href="${process.env.FRONT_END_URL}/verify.html?token=${token}&email=${email}" target="_blank" style="color: #007bff; text-decoration: none;">click here</a> to confirm your account.</p>
+    <div
+      style="
+        width: 80%;
+        max-width: 600px;
+        margin: auto;
+        text-align: left;
+        font-family: Arial, sans-serif;
+      "
+    >
+      <p style="font-size: 16px">Hi! ${email},</p>
+      <p style="font-size: 16px">
+        Thank you for your interest in our organization! You are almost done
+        with the sign-up process.
+      </p>
+      <p style="font-size: 16px">
+        Please
+        <a
+          href="${process.env.FRONT_END_URL}/verify?token=${token}&email=${email}"
+          target="_blank"
+          style="color: #007bff; text-decoration: none"
+          >click here</a
+        >
+        to confirm your account.
+      </p>
     </div>
-   <div style="width: 80%; max-width: 600px;background-color: #00171F;color: white; margin: auto;height: 60px; text-align: center; margin-top: 20px; font-family: Arial, sans-serif;border-bottom: 1px solid;">
-      <p style="font-size: 16px;padding: 15px;">Thanks!</p>
+    <div
+      style="
+        width: 80%;
+        max-width: 600px;
+        background-color:#edf1fd;
+        color: #021742;
+        margin: auto;
+        height: 60px;
+        text-align: center;
+        margin-top: 20px;
+        font-family: Arial, sans-serif;
+        border-bottom: 1px solid;
+      "
+    >
+      <p style="font-size: 16px; padding: 15px">Thanks! For choosing 1000 Hills Solicitors</p>
     </div>
   </div>
     

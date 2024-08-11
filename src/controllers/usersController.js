@@ -53,38 +53,27 @@ async function sendVerificationEmail(email, token) {
         font-family: Arial, sans-serif;
       "
     >
-      <p style="font-size: 16px">Hi! ${email},</p>
+      <p style="font-size: 16px">Dear ${email},</p>
       <p style="font-size: 16px">
-        Thank you for your interest in our organization! You are almost done
-        with the sign-up process.
+        Thank you for your interest in joining 1000 Hills solicitors! You're just one step away from completing the sign-up process.
       </p>
       <p style="font-size: 16px">
-        Please
+        Please click the link below to confirm your account:<br><br>
         <a
           href="${process.env.FRONT_END_URL}/verify?token=${token}&email=${email}"
           target="_blank"
           style="color: #007bff; text-decoration: none"
-          >click here</a
+          >Confirm Your Account</a
         >
-        to confirm your account.
+        
       </p>
+      <p>If you did not initiate this request, please disregard this email.</p>
+
+<p style="font-size: 16px">We're excited to have you with us!</p>
+<p style="font-size: 16px">Best regards,</p>
+<p style="font-size: 16px">1000 Hills Solicitors Team</p>
     </div>
-    <div
-      style="
-        width: 80%;
-        max-width: 600px;
-        background-color:#edf1fd;
-        color: #021742;
-        margin: auto;
-        height: 60px;
-        text-align: center;
-        margin-top: 20px;
-        font-family: Arial, sans-serif;
-        border-bottom: 1px solid;
-      "
-    >
-      <p style="font-size: 16px; padding: 15px">Thanks! For choosing 1000 Hills Solicitors</p>
-    </div>
+    
   </div>
     
     
@@ -333,13 +322,11 @@ class UsersController {
       }
 
       // Send response indicating successful email verification
-      return res
-        .status(200)
-        .json({
-          data: user,
-          status: "success",
-          message: "Email verified successfully",
-        });
+      return res.status(200).json({
+        data: user,
+        status: "success",
+        message: "Email verified successfully",
+      });
     } catch (error) {
       console.error("Error verifying email:", error);
       // Send internal server error response
@@ -405,7 +392,7 @@ class UsersController {
       const { email } = req.body;
       const findUser = await User.findOne({ email });
       if (!findUser) {
-        return res.status(400).json({ message: "User not found" });
+        return res.status(400).json({ message: "User not found yoooo" });
       }
 
       const token = jwt.sign({ userId: findUser._id }, process.env.JWT_SECRET, {
@@ -433,24 +420,23 @@ class UsersController {
         to: findUser.email,
         from: process.env.EMAIL_USERNAME,
         subject: "Password Reset",
-        html: `<div style="width: 100%; height: 60vh;  ">
-    <div style="width: 80%; max-width: 600px; margin: auto;border-bottom: 1px solid;">
+        html: `<div style="width: 90%; height: fitcontent;border: 2px solid #021742;border-radius: 20px;">
+    <div style="width: 60%; max-width: 600px; margin: auto;border-bottom: 1px solid;">
       <img src="https://res.cloudinary.com/dndfvxckz/image/upload/v1718273194/t8y9k778uea4tlzcidnn.jpg" style="width: 100%; height: 200px; display: block; margin: auto;">
     </div>
     <div style="width: 80%; max-width: 600px; margin: auto; text-align: left; font-family: Arial, sans-serif;">
-      <p style="font-size: 16px;">Hi! ${email},</p>
-      <p style="font-size: 16px;">You requested a password reset. Click the following link to reset your password:<a href="${
+      <p style="font-size: 16px;">Dear ${email},</p>
+      <p style="font-size: 16px;">We received a request to reset your password. To proceed, please click the link below:<br><br><a href="${
         process.env.FRONT_END_URL
-      }/resetPassword.html?token=${token}">Link</a>.</p>
-      <p>This link will expire ${new Date(
+      }/resetpassword?token=${token}">Reset Your Password</a>.</p>
+      <p>For security reasons, this link will expire in [${new Date(
         findUser.resetTokenExpiration
-      ).toISOString()}</p>
-    </div>
-    <div style="width: 80%; max-width: 600px;background-color: #00171F;color: white; margin: auto;height: 60px; text-align: center; margin-top: 20px; font-family: Arial, sans-serif;border-bottom: 1px solid;">
-      <p style="font-size: 16px;padding: 15px;">Thanks!</p>
+      ).toISOString()}]. If you did not request a password reset, please ignore this email or contact our support team. </p>
+
+      <p>Thank you,</p>
+<p>1000 Hills Solicitors Support Team</p>
     </div>
   </div> `,
-        
       };
 
       transporter.sendMail(mailOptions, (err, info) => {

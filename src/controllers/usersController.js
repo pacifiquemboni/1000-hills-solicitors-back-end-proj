@@ -392,7 +392,7 @@ class UsersController {
       const { email } = req.body;
       const findUser = await User.findOne({ email });
       if (!findUser) {
-        return res.status(400).json({ message: "User not found yoooo" });
+        return res.status(400).json({ message: "User not found" });
       }
 
       const token = jwt.sign({ userId: findUser._id }, process.env.JWT_SECRET, {
@@ -428,7 +428,7 @@ class UsersController {
       <p style="font-size: 16px;">Dear ${email},</p>
       <p style="font-size: 16px;">We received a request to reset your password. To proceed, please click the link below:<br><br><a href="${
         process.env.FRONT_END_URL
-      }/resetpassword?token=${token}">Reset Your Password</a>.</p>
+      }/reset-password?token=${token}">Reset Your Password</a>.</p>
       <p>For security reasons, this link will expire in [${new Date(
         findUser.resetTokenExpiration
       ).toISOString()}]. If you did not request a password reset, please ignore this email or contact our support team. </p>

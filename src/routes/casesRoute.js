@@ -42,15 +42,15 @@ casesCotroller.caseByAssigned);
 casesRoute.put(
   "/:id",
   authMiddleware.isAuthenticated,
-  authMiddleware.checkClientRole,
-  authMiddleware.checkAdminRole,
+  // authMiddleware.checkClientRole,
+  // authMiddleware.checkAdminRole,
   casesCotroller.updateSingleCase
 );
 casesRoute.delete(
   "/:id",
   authMiddleware.isAuthenticated,
-  authMiddleware.checkClientRole,
-  authMiddleware.checkAdminRole,
+  // authMiddleware.checkClientRole,
+  // authMiddleware.checkAdminRole,
   casesCotroller.deleteSingleCase
 );
 // mark as done or archive

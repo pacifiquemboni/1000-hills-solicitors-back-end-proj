@@ -280,7 +280,7 @@ class UsersController {
     } catch (error) {
       return res.status(500).json({
         status: "internal server error",
-        error: err.message,
+        error: error.message,
       });
     }
   }

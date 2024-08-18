@@ -95,22 +95,28 @@ class authMiddleware{
       })
     }
   }
-  static async checkAdminRole(req,res,next){
+  static async checkUserRole(req, res, next) {
     try {
-      const user = req.user
-      if(user.role == "admin"){
+      const user = req.user;
+  
+      // Check if user role is "admin" or "client"
+      if (user.role === "admin" || user.role === "client") {
         return next();
       }
-      return res.status(4003).json({
-        status:"fail",
-        message: "You do not have a permission to perform this action"
-      })
+  
+      // If role is not "admin" or "client", return a 403 Forbidden response
+      return res.status(403).json({
+        status: "fail",
+        message: "You do not have permission to perform this action"
+      });
     } catch (error) {
+      // Handle any unexpected errors
       return res.status(500).json({
-        status:"error",
-        message:error.message
-      })
+        status: "error",
+        message: error.message
+      });
     }
   }
+  
 }
 export default authMiddleware

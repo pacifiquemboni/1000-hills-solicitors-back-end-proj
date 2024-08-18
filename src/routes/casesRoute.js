@@ -49,7 +49,7 @@ casesRoute.put(
 casesRoute.delete(
   "/:id",
   authMiddleware.isAuthenticated,
-  // authMiddleware.checkClientRole,
+  authMiddleware.checkClientRole,
   authMiddleware.checkAdminRole,
   casesCotroller.deleteSingleCase
 );

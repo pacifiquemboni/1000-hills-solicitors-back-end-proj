@@ -64,7 +64,7 @@ class authMiddleware{
   static async checkAdminRole(req,res,next){
     try {
       const user = req.user
-      if(user.role == "super_admin"){
+      if(user.role == "admin"){
         return next();
       }
       return res.status(4003).json({
@@ -98,7 +98,7 @@ class authMiddleware{
   static async checkAdminRole(req,res,next){
     try {
       const user = req.user
-      if(user.role == "super_admin"){
+      if(user.role == "admin"){
         return next();
       }
       return res.status(4003).json({

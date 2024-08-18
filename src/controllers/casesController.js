@@ -172,23 +172,34 @@ class casesCotroller {
   static async markAsDoneArchived(req, res) {
     try {
       const { markAsDoneArchived } = req.body;
-      const caseFound = await Cases.findOne({ _id: req.params.id });
-      if (caseFound) {
-        caseFound.markAsDoneArchived = markAsDoneArchived;
+      const caseFound = await Cases.findById(req.params.id); // Use findById for better readability
+  
+      if (!caseFound) {
+        return res.status(404).json({
+          status: "error",
+          message: "Case not found",
+        });
       }
+  
+      caseFound.markAsDoneArchived = markAsDoneArchived; // Correct field name
       caseFound.updatedAt = new Date();
+  
       await caseFound.save();
+  
       return res.status(200).json({
-        status: "sucess",
-        message: `case marked as ${caseFound.markedAsDoneArchived} successfully`,
+        status: "success",
+        message: `Case marked as ${caseFound.markAsDoneArchived} successfully`,
         data: caseFound,
       });
     } catch (error) {
-      return res
-        .status(500)
-        .json({ status: "internal server error", error: error.message });
+      return res.status(500).json({
+        status: "error",
+        message: "Internal server error",
+        error: error.message,
+      });
     }
   }
+  
   static async status(req, res) {
     try {
       const { status } = req.body;

@@ -195,6 +195,17 @@ class UsersController {
       return res.status(500).json({ message: "Failed to access to db" });
     }
   }
+  static async getAdminStaff(req, res) {
+    try {
+      const adminStaffEmails = await Users.find({ role: "adminStaff" }, { email: 1, _id: 0 });
+      return res.status(200).json({ data: adminStaffEmails, message: "All Admin Staff Emails" });
+    } catch (error) {
+      console.log(error);
+      return res.status(500).json({ message: "Failed to access the database" });
+    }
+  }
+  
+  
   static async getSingleUser(req, res) {
     try {
       const singleUser = await Users.findOne({ _id: req.params.id });

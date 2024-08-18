@@ -11,6 +11,11 @@ userRoute.get(
   authmiddleware.checkAdminRole,
   usersController.getUsers
 );
+//get all Lawyers
+userRoute.get(
+  "/lawyers",
+  usersController.getAdminStaff
+);
 userRoute.post("/verify/:token", usersController.verifyEmail);
 //user login route
 userRoute.post("/login", usersController.loginUser);

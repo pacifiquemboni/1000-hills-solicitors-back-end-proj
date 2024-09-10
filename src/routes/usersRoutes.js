@@ -29,7 +29,7 @@ userRoute.get(
 userRoute.put(
   "/:id",
   authmiddleware.isAuthenticated,
-  authmiddleware.checkAdminRole,
+
   usersController.updateSingleUser
 );
 //update password in profile
